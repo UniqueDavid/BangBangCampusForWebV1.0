@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4e608db9-b909-4381-9a02-1ac205c64c66" name="BangBangCampusWeb" url="http://112.74.41.59">
+        <fileTransfer host="112.74.41.59" port="22" rootFolder="/home/BangBangCampusForWebV1.0" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

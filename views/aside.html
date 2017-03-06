@@ -1,0 +1,72 @@
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <div class="user-panel">
+            <div class="pull-left image"><img class="img-circle"  ng-src="{{adminAvatar}}"></div>
+            <div class="pull-left info">
+                <p>{{adminName}}</p>
+                <i class="{{adminStatusImg}}"></i> {{adminStatus}}
+            </div>
+        </div>
+
+        <!--侧边栏的设计-->
+        <ul class="sidebar-menu">
+            <li class="header">导航栏</li>
+
+            <li class="treeview active">
+                <a href="#"><i class="fa fa-dashboard"></i><span>用户管理</span><span class="pull-right-container"> <i
+                        class="fa fa-angle-left pull-right"></i> </span></a>
+                <ul class="treeview-menu" style="display:block">
+                    <li class="active"><a href="UserInfoPage"><i class="fa fa-info"></i> 用户信息管理</a></li>
+                    <li><a href="UserSkillPage"><i class="fa fa-compass"></i>用户技能管理</a></li>
+                    <li><a href="#"><i class="fa fa-signal"></i>用户状态管理</a></li>
+                    <li><a href="#"><i class="fa fa-rocket"></i>用户权力管理</a></li>
+                    <li><a href="UserIdentityPage"><i class="fa fa-certificate"></i>用户身份审核</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-database"></i><span>内容管理</span><span class="pull-right-container"> <i
+                        class="fa fa-angle-left pull-right"></i> </span></a>
+                <ul class="treeview-menu">
+                    <li class="active"><a href="UserOrderPage"><i class="fa fa-registered"></i>订单审核</a></li>
+                    <li><a href="#"><i class="fa fa-comment"></i>评价审核</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-facebook"></i><span>消息管理</span><span class="pull-right-container"> <i
+                        class="fa fa-angle-left pull-right"></i> </span></a>
+                <ul class="treeview-menu">
+                    <li class="active"><a href="#"><i class="fa fa-send"></i> 推送消息</a></li>
+                    <li><a href="#"><i class="fa fa-reply"></i>反馈消息</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+</aside>
+<script type="text/javascript">
+    var app=angular.module('currentUser',[]);
+    app.controller('currentUserController',function ($scope,$http) {
+        $http.get('/getCurrentAdminInfo').success(function (res) {
+            $scope.adminName=res.adminName;
+            switch(res.adminStatus){
+                case 101:
+                    $scope.adminStatus='在线';
+                    $scope.adminStatusImg='fa  fa-circle text-green';
+                    break;
+                case 102:
+                    $scope.adminStatus='忙碌';
+                    $scope.adminStatusImg='fa  fa-circle text-red';
+                    break;
+                case 103:
+                    $scope.adminStatus='离开';
+                    $scope.adminStatusImg='fa  fa-circle text-white';
+                    break;
+            }
+            $scope.adminAvatar=res.adminAvatar;
+            $scope.adminPosition=res.adminPositon;
+            $scope.adminDept=res.adminDept;
+        });
+    });
+</script>

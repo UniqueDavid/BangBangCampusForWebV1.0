@@ -1,0 +1,427 @@
+<!doctype html>
+<html ng-app="currentUser" ng-controller="currentUserController">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>帮帮后台管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../public/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../public/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+           folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="../public/dist/css/skins/_all-skins.min.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="../public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+    <link rel="stylesheet" href="../public/bootstrap/css/bootstrapValidator.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- jQuery 2.2.3 -->
+    <script src="../public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../public/javascripts/bootstrap-table.min.js"></script>
+    <script src="../public/javascripts/bootstrap-table-zh-CN.min.js"></script>
+    <!--表单验证-->
+    <script src="../public/javascripts/bootstrapValidator.min.js"></script>
+    <!--使用angularjs框架-->
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body class="hold-transition skin-green sidebar-mini">
+<div class="wrapper">
+    <%- include('header.html')%>
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image"><img class="img-circle"  ng-src="{{adminAvatar}}"></div>
+                <div class="pull-left info">
+                    <p>{{adminName}}</p>
+                    <i class="{{adminStatusImg}}"></i> {{adminStatus}}
+                </div>
+            </div>
+
+            <!--侧边栏的设计-->
+            <ul class="sidebar-menu">
+                <li class="header">导航栏</li>
+                <li class="treeview active">
+                    <a href="#"><i class="fa fa-dashboard"></i><span>用户管理</span><span class="pull-right-container"> <i
+                            class="fa fa-angle-left pull-right"></i> </span></a>
+                    <ul class="treeview-menu" style="display:block">
+                        <li class="active"><a href="UserInfoPage"><i class="fa fa-info"></i> 用户基本信息管理</a></li>
+                        <li><a href="UserSkillPage"><i class="fa fa-compass"></i>用户兴趣管理</a></li>
+                        <li><a href="#"><i class="fa fa-signal"></i>用户信用管理</a></li>
+                        <li><a href="#"><i class="fa fa-rocket"></i>用户技能管理</a></li>
+                        <li><a href="UserIdentityPage"><i class="fa fa-certificate"></i>用户身份审核</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-database"></i><span>订单管理</span><span class="pull-right-container"> <i
+                            class="fa fa-angle-left pull-right"></i> </span></a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="UserOrderPage"><i class="fa fa-registered"></i>订单信息管理</a></li>
+                        <li><a href="#"><i class="fa fa-comment"></i>订单审核</a></li>
+                        <li><a href="#"><i class="fa fa-comment"></i>订单类型管理</a></li>
+                        <li><a href="#"><i class="fa fa-comment"></i>订单数据统计</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-facebook"></i><span>评价管理</span><span class="pull-right-container"> <i
+                            class="fa fa-angle-left pull-right"></i> </span></a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="#"><i class="fa fa-send"></i> 评价基本信息管理</a></li>
+                        <li><a href="#"><i class="fa fa-reply"></i>评价审核</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-facebook"></i><span>权限管理</span><span class="pull-right-container"> <i
+                            class="fa fa-angle-left pull-right"></i> </span></a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="#"><i class="fa fa-send"></i> 权限信息浏览</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-facebook"></i><span>附加功能</span><span class="pull-right-container"> <i
+                            class="fa fa-angle-left pull-right"></i> </span></a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a href="#"><i class="fa fa-send"></i> 管理员信息管理</a></li>
+                        <li><a href="#"><i class="fa fa-reply"></i>广告推送</a></li>
+                        <li><a href="#"><i class="fa fa-reply"></i>消息反馈</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+    <!--内容部分-->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                用户信息管理模块
+                <small>Version 1.0</small>
+            </h1>
+        </section>
+        <section class="content">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">用户基本信息列表</div>
+                </div>
+                <div class="box-body">
+                    <div id="toolbar">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addmodal">
+                            <i class="ion-person-add"></i> 新增用户
+                        </button>
+                        <!--新增用户模态框定义-->
+                        <div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="新增用户" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myAddModalLabel">
+                                            新增用户
+                                        </h4>
+                                    </div>
+                                    <!--此处写新增用户的布局-->
+                                    <div class="modal-body">
+                                        <div class="box">
+                                            <form class="form-horizontal" id="addUserForm">
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <label for="usernickname" class="col-sm-2 control-label">昵称</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="usernickname" name="usernickname" type="text" class="form-control" placeholder="输入昵称">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userpassword" class="col-sm-2 control-label">密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userpassword" name="userpassword" type="password" class="form-control" placeholder="输入密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ensurepassword" class="col-sm-2 control-label">确认密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="ensurepassword" name="ensureuserpassword"type="password" class="form-control" placeholder="再次输入密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">性别</label>
+                                                        <div class="col-sm-8" >
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="usersex" value="male" checked>男
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="usersex" value="female">女</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">头像</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" id="useravatar" name="useravatar" class="form-control">
+                                                            (填写头像的地址，一般是云存储地址)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">出生日期</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="date"  class="form-control" id="userbirth" name="userbirth">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userphone" class="col-sm-2 control-label">电话</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userphone" name="userphone" type="tel" class="form-control" placeholder="输入电话号码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="useraddress" class="col-sm-2 control-label">联系地址</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="useraddress" name="useraddress" type="text" class="form-control" placeholder="输入联系地址">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userschool" class="col-sm-2 control-label">大学</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userschool" name="userschool" type="text" class="form-control" placeholder="输入大学">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userorganization" class="col-sm-2 control-label">社团</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userorganization" name="userorganization" type="text" class="form-control" placeholder="输入社团">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userfocus" class="col-sm-2 control-label">关注事物</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userfocus" name="userfocus" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">标签</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userlabel" name="userlabel" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">兴趣</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userfavor" name="userfavor" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">技能</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userskill" name="userskill" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">安全问答</label>
+                                                        <div class="col-sm-8">
+                                                           问题:<input id="usersafequestion" name="usersafequestion" type="text" class="form-control" placeholder="请输入问题">
+                                                            答案:<input id="usersafeqanswer" name="usersafeanswer" type="text" class="form-control" placeholder="请输入答案">
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                    <div class="modal-footer">
+                                        <button type="reset" class="btn btn-default"
+                                                data-dismiss="modal">
+                                            取消注册
+                                        </button>
+                                        <button id="registerUser" type="button" class="btn btn-primary" onclick="submitinfo()">
+                                            确认注册
+                                        </button>
+                                    </div></form>
+                                </div>
+                            </div>
+                                </div></div></div>
+                        <!--修改用户模态框定义-->
+                        <div class="modal" id="altermodal" tabindex="-1" role="dialog" aria-labelledby="修改用户" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myAlterModalLabel">
+                                            修改用户
+                                        </h4>
+                                    </div>
+                                    <!--此处写修改用户的布局-->
+                                    <div class="modal-body">
+                                        <div class="box">
+                                            <form class="form-horizontal"  id="alterUserForm">
+                                                <div class="box-body">
+                                                    <div class="form-group" hidden>
+                                                        <label for="userid" class="col-sm-2 control-label">用户号</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userid" name="userid" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alterusernickname" class="col-sm-2 control-label">昵称</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alterusernickname" name="usernickname" type="text" class="form-control" placeholder="输入昵称">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="olduserpassword" class="col-sm-2 control-label">旧密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="olduserpassword" name="olduserpassword" type="password" class="form-control" placeholder="原来的密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alteruserpassword" class="col-sm-2 control-label">新密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserpassword" name="userpassword" type="password" class="form-control" placeholder="输入新密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alterensurepassword" class="col-sm-2 control-label">确认密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alterensurepassword" name="ensureuserpassword"type="password" class="form-control" placeholder="再次输入新密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">性别</label>
+                                                        <div class="col-sm-8" >
+                                                            <label class="radio-inline">
+                                                                <input id="radiomale" type="radio" name="usersex" value="male" checked>男
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input id="radiofemale" type="radio" name="usersex" value="female">女</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">头像</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="alteruseravatar" name="useravatar">(填写路径)
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">出生日期</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="date"  class="form-control" id="alteruserbirth" name="userbirth">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alteruserphone" class="col-sm-2 control-label">电话</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserphone" name="userphone" type="tel" class="form-control" placeholder="输入电话号码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alteruseraddress" class="col-sm-2 control-label">联系地址</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruseraddress" name="useraddress" type="text" class="form-control" placeholder="输入联系地址">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alteruserschool" class="col-sm-2 control-label">大学</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserschool" name="userschool" type="text" class="form-control" placeholder="输入大学">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alteruserorganization" class="col-sm-2 control-label">社团</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserorganization" name="userorganization" type="text" class="form-control" placeholder="输入社团">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="alteruserfocus" class="col-sm-2 control-label">关注事物</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserfocus" name="userfocus" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">标签</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserlabel" name="userlabel" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">兴趣</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserfavor" name="userfavor" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">技能</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="alteruserskill" name="userskill" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">安全问答</label>
+                                                        <div class="col-sm-8">
+                                                            问题:<input id="alterusersafequestion" name="usersafequestion" type="text" class="form-control" placeholder="请输入问题">
+                                                            答案:<input id="alterusersafeanswer" name="usersafeanswer" type="text" class="form-control" placeholder="请输入答案">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="modal-footer">
+                                                <button type="reset" class="btn btn-default" data-dismiss="modal">
+                                                    取消修改
+                                                </button>
+                                                <button type="button" class="btn btn-primary" onclick="alteruser()">
+                                                    确认修改
+                                                </button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div></div></div>
+                        <button id="remove"  class="btn btn-danger" disabled>
+                            <i class="ion-android-delete"></i> 批量删除用户
+                        </button>
+                    </div>
+                    <table id="user-info"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="clo-md-3">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <canvas id="pieChart" height="121" width="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <%- include('footer.html')%>
+    <script src="../public/plugins/chartjs/Chart.min.js"></script>
+    <!--table的初始化-->
+    <script type="text/javascript" src="../public/javascripts/userinfo.js">
+    </script>
+</div>
+</body>
+</html>

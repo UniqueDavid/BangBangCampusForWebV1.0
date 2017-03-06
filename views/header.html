@@ -1,0 +1,64 @@
+<header class="main-header"><a href="UserInfoPage.html" class="logo">
+    <!-- mini logo for sidebar mini 50x50 pixels -->
+    <span class="logo-mini">Bang</span>
+    <!-- logo for regular state and mobile devices -->
+    <span class="logo-lg">帮帮后台管理系统</span> </a>
+    <nav class="navbar navbar-static-top"><a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
+    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1">
+                    <img src="{{adminAvatar}}" class="user-image">
+                    <span class="hidden-xs">{{adminName}}</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" role="menu">
+                    <li class="user-header">
+                        <img src="{{adminAvatar}}" class="img-circle">
+                        <p>{{adminName}}</p>
+                    </li>
+                    <li class="user-body">
+                        <div class="row">
+                            <div class="col-xs-4 text-center"><a href="#">{{adminPosition}}</a></div>
+                            <div class="col-xs-4 text-center"><a href="#">{{adminDept}}</a></div>
+                        </div>
+                    </li>
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="#" class="btn btn-default">查看资料</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="#" class="btn btn-default">注销用户</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    </nav>
+</header>
+<script type="text/javascript">
+    var app=angular.module('currentUser',[]);
+    app.controller('currentUserController',function ($scope,$http) {
+        $http.get('/getCurrentAdminInfo').success(function (res) {
+            $scope.adminName=res.adminName;
+            switch(res.adminStatus){
+                case 101:
+                    $scope.adminStatus='在线';
+                    $scope.adminStatusImg='fa  fa-circle text-green';
+                    break;
+                case 102:
+                    $scope.adminStatus='忙碌';
+                    $scope.adminStatusImg='fa  fa-circle text-red';
+                    break;
+                case 103:
+                    $scope.adminStatus='离开';
+                    $scope.adminStatusImg='fa  fa-circle text-white';
+                    break;
+            }
+            $scope.adminAvatar=res.adminAvatar;
+            $scope.adminPosition=res.adminPositon;
+            $scope.adminDept=res.adminDept;
+        });
+    });
+</script>
