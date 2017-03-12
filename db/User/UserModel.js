@@ -30,12 +30,12 @@ var UserSchema=new Schema({
         default:[""]
     },
     userSkill:{
-        type:Schema.Types.ObjectId,
-        ref:'UserSkill'
+        type:[String],
+        default:[""]
     },
     userStatus:{
-        type:Schema.Types.ObjectId,
-        ref:'UserStatus'
+        type:Number,
+        default:1
     },
     userSafeQuestion:{
         question:{
@@ -48,8 +48,8 @@ var UserSchema=new Schema({
         }
     },
     userReputation:{
-        type:Schema.Types.ObjectId,
-        ref:'UserReputation'
+        type:Number,
+        default:1
     },
     userCredit:{
         type:Number,
@@ -84,7 +84,8 @@ var UserStatusSchema=new Schema({
 });
 var UserReputationSchema=new Schema({
     reputationId:Number,
-    reputationValue:Number,
+    reputationMinValue:Number,
+    reputationMaxValue:Number,
     reputationLevel:Number
 });
 
@@ -94,4 +95,9 @@ var UserStatus=mongoose.model('UserStatus',UserStatusSchema,'tUserStatus');
 var UserReputation=mongoose.model('UserReputation',UserReputationSchema,'tUserReputation');
 
 //生成User模型
-module.exports=mongoose.model('User',UserSchema,'tUser');
+var User=mongoose.model('User',UserSchema,'BangBangUserInfo');
+module.exports=User;
+//生成其他相关模型
+User.UserSkill=UserSkill;
+User.UserStatus=UserStatus;
+User.UserReputation=UserReputation;

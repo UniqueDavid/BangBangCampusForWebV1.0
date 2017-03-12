@@ -3,7 +3,7 @@ var userinfo=$('#user-info');
 //初始化bootstrap-table
 userinfo.bootstrapTable({
     dataType: 'json',
-    url: 'http://localhost:3002/getAllUserInfos',         //请求后台的URL（*）
+    url: 'http://localhost:3000/getAllUserInfos',         //请求后台的URL（*）
     method: 'POST',                      //请求方式（*）
     toolbar: '#toolbar',                //工具按钮用哪个容器
     striped: true,                      //是否显示行间隔色
@@ -122,17 +122,21 @@ function getIdSelections() {
 }
 
 //注册用户
-function submitinfo() {
-    var addUserForm=$("#addUserForm");
-    addUserForm.data("bootstrapValidator").validate();
-    if(!addUserForm.data("bootstrapValidator").isValid()){
-        return;
-    }
-    $.post("addNewUser",addUserForm.serialize(),function (result) {
+function registerUserinfo() {
+    //获取注册用户信息的表单
+    var registerUserInfoForm=$("#registerUserInfoForm");
+    //首先验证表单里面的数据格式是否正确，不正确会有相应的提示
+    // registerUserInfoForm.data("bootstrapValidator").validate();
+    // if(!registerUserInfoForm.data("bootstrapValidator").isValid()){
+    //     return;
+    // }
+    //在正确的情况下向后台请求注册用户信息
+    $.post("registerUserInfo",registerUserInfoForm.serialize(),function (result) {
         alert(result);
     });
     $("#addmodal").modal("hide");
 }
+
 //日期格式化
 function formatDate(value,index,row) {
     var date=new Date(value);
@@ -205,7 +209,13 @@ function onAlter(userId) {
         }
     });
 }
-
+//为勾选框加载数据
+//这里要注意 不能再填写依赖[]，因为前面已经有了一个[]依赖，否则数据不能显示
+angular.module('currentUser').controller('addUserController',function ($scope,$http) {
+    $http.get('/getUserSkills').success(function (res) {
+        $scope.userSkills=res;
+    });
+ });
 //设置添加用户表单格式
 $("#addUserForm").bootstrapValidator({
     message:"提交数据不能全部为空！！",

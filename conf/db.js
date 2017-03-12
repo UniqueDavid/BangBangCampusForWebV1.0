@@ -1,6 +1,6 @@
 //数据库配置文件
 var mongoose=require('mongoose');
-DB_URL="mongodb://112.74.41.59/sos";
+DB_URL="mongodb://bangbang:2017bangbang@112.74.41.59/sos";
 //创建数据库连接
 mongoose.connect(DB_URL,function (err) {
     if(!err)

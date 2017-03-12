@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="currentUser" ng-controller="currentUserController">
+<html ng-app="currentUser" >
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,20 +7,20 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="../public/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../public/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
            folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="../public/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <!-- bootstrap wysihtml5 - text editor -->
-    <link rel="stylesheet" href="../public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <link rel="stylesheet" href="public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
-    <link rel="stylesheet" href="../public/bootstrap/css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrapValidator.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,7 +29,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- jQuery 2.2.3 -->
-    <script src="../public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="public/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -37,11 +37,10 @@
         $.widget.bridge('uibutton', $.ui.button);
     </script>
     <!-- Bootstrap 3.3.6 -->
-    <script src="../public/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../public/javascripts/bootstrap-table.min.js"></script>
-    <script src="../public/javascripts/bootstrap-table-zh-CN.min.js"></script>
+    <script src="bootstrap/js/bootstrap-table.min.js"></script>
+    <script src="bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
     <!--表单验证-->
-    <script src="../public/javascripts/bootstrapValidator.min.js"></script>
+    <script src="bootstrap/js/bootstrapValidator.min.js"></script>
     <!--使用angularjs框架-->
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
 </head>
@@ -50,7 +49,7 @@
     <%- include('header.html')%>
     <aside class="main-sidebar">
         <section class="sidebar">
-            <div class="user-panel">
+            <div class="user-panel" ng-controller="currentUserHeaderController">
                 <div class="pull-left image"><img class="img-circle"  ng-src="{{adminAvatar}}"></div>
                 <div class="pull-left info">
                     <p>{{adminName}}</p>
@@ -142,9 +141,9 @@
                                         </h4>
                                     </div>
                                     <!--此处写新增用户的布局-->
-                                    <div class="modal-body">
+                                    <div class="modal-body" ng-controller="addUserController">
                                         <div class="box">
-                                            <form class="form-horizontal" id="addUserForm">
+                                            <form class="form-horizontal" id="registerUserInfoForm">
                                                 <div class="box-body">
                                                     <div class="form-group">
                                                         <label for="usernickname" class="col-sm-2 control-label">昵称</label>
@@ -232,7 +231,7 @@
                                                     <div class="form-group">
                                                         <label  class="col-sm-2 control-label">技能</label>
                                                         <div class="col-sm-8">
-                                                            <input id="userskill" name="userskill" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                            <select  ng-model="selectedName" ng-options="x.skillName for x in userSkills" name="userskill" id="userskill"></select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -248,13 +247,16 @@
                                                 data-dismiss="modal">
                                             取消注册
                                         </button>
-                                        <button id="registerUser" type="button" class="btn btn-primary" onclick="submitinfo()">
+                                        <button id="registerUser" type="button" class="btn btn-primary" onclick="registerUserinfo()">
                                             确认注册
                                         </button>
                                     </div></form>
                                 </div>
                             </div>
                                 </div></div></div>
+                        <button id="remove"  class="btn btn-danger" disabled>
+                            <i class="ion-android-delete"></i> 批量删除用户
+                        </button>
                         <!--修改用户模态框定义-->
                         <div class="modal" id="altermodal" tabindex="-1" role="dialog" aria-labelledby="修改用户" aria-hidden="true">
                             <div class="modal-dialog">
@@ -380,21 +382,18 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <div class="modal-footer">
-                                                <button type="reset" class="btn btn-default" data-dismiss="modal">
-                                                    取消修改
-                                                </button>
-                                                <button type="button" class="btn btn-primary" onclick="alteruser()">
-                                                    确认修改
-                                                </button>
-                                            </div>
+                                                <div class="modal-footer">
+                                                    <button type="reset" class="btn btn-default" data-dismiss="modal">
+                                                        取消修改
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" onclick="alteruser()">
+                                                        确认修改
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div></div></div>
-                        <button id="remove"  class="btn btn-danger" disabled>
-                            <i class="ion-android-delete"></i> 批量删除用户
-                        </button>
                     </div>
                     <table id="user-info"></table>
                 </div>
@@ -420,7 +419,7 @@
     <%- include('footer.html')%>
     <script src="../public/plugins/chartjs/Chart.min.js"></script>
     <!--table的初始化-->
-    <script type="text/javascript" src="../public/javascripts/userinfo.js">
+    <script type="text/javascript" src="javascripts/userinfo.js">
     </script>
 </div>
 </body>

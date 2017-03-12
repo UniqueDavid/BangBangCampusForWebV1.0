@@ -3,14 +3,15 @@ var AdminModel=require('../../db/Others/AdminModel');
 var express = require('express');
 //管理员登录验证操作
 module.exports.validateLoginInfo=function (req,res) {
+    console.log(req.session);
     var username=req.body.username;
     var password=req.body.password;
     AdminModel.find({adminName:username,adminPassword:password},function (err,result) {
         if(!err&&result!=''){
-            if(req.session.user&&req.session.user.adminId==result.adminId){
+            if(req.session.loginInfo&&req.session.loginInfo.adminId==result.adminId){
                 res.redirect('/');
             }else{
-                req.session.user=result;
+                req.session.loginInfo=result;
                 res.redirect('/');
             }
         }else

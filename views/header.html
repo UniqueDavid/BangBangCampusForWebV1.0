@@ -4,7 +4,7 @@
     <!-- logo for regular state and mobile devices -->
     <span class="logo-lg">帮帮后台管理系统</span> </a>
     <nav class="navbar navbar-static-top"><a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"></a>
-    <div class="navbar-custom-menu">
+    <div class="navbar-custom-menu" ng-controller="currentUserHeaderController">
         <ul class="nav navbar-nav">
             <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1">
@@ -38,8 +38,7 @@
     </nav>
 </header>
 <script type="text/javascript">
-    var app=angular.module('currentUser',[]);
-    app.controller('currentUserController',function ($scope,$http) {
+    angular.module('currentUser',[]).controller('currentUserHeaderController',function ($scope,$http) {
         $http.get('/getCurrentAdminInfo').success(function (res) {
             $scope.adminName=res.adminName;
             switch(res.adminStatus){
